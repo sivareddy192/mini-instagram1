@@ -3,7 +3,7 @@ const express = require("express");
 const session = require("express-session");
 const methodOverride = require("method-override");
 const path = require("path");
-const flash = require("connect-flash");   // ✅ ADDED
+const flash = require("connect-flash");   
 const PORT = process.env.PORT || 3000;
 
 const connectDB = require("./config/db");
@@ -40,10 +40,10 @@ app.use(
   })
 );
 
-// ✅ ADD FLASH AFTER SESSION
+
 app.use(flash());
 
-// ✅ MAKE FLASH GLOBAL (VERY IMPORTANT)
+
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
