@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Post</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+
+  <div class="bg-white p-6 rounded-xl shadow-lg w-96">
+    <h2 class="text-2xl font-bold mb-4 text-center">Edit Post</h2>
+
+    <form action="/update/<%= post._id %>" method="POST">
+      <img src="<%= post.image %>" class="w-full rounded mb-3" />
+      <input 
+        type="text" 
+        name="caption" 
+        value="<%= post.caption %>" 
+        class="w-full p-2 border rounded mb-4"
+        required
+      />
+      <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+        Update
+      </button>
+    </form>
+
+    <a href="/feed" class="block text-center mt-4 text-gray-600">
+      Back
+    </a>
+  </div>
+
+</body>
+</html>

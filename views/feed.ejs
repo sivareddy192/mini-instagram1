@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mini Instagram</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<script>
+  setTimeout(() => {
+    const success = document.getElementById("flash-success");
+    const error = document.getElementById("flash-error");
+
+    if (success) {
+      success.style.opacity = "0";
+      setTimeout(() => success.remove(), 500);
+    }
+
+    if (error) {
+      error.style.opacity = "0";
+      setTimeout(() => error.remove(), 500);
+    }
+  }, 3000);
+</script>
+
+<body class="bg-gray-100">
+
+  <div class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold text-pink-500">Mini Instagram</h1>
+    <a href="/logout" class="bg-red-500 text-white px-4 py-1 rounded">
+      Logout
+    </a>
+  </div>
+
+<div class="max-w-xl mx-auto mt-4 px-4">
+
+  <% if (success_msg && success_msg.length > 0) { %>
+    <div id="flash-success" class="bg-green-500 text-white p-3 rounded mb-3 shadow transition-opacity duration-500">
+      <%= success_msg %>
+    </div>
+  <% } %>
+
+  <% if (error_msg && error_msg.length > 0) { %>
+    <div id="flash-error" class="bg-red-500 text-white p-3 rounded mb-3 shadow transition-opacity duration-500">
+      <%= error_msg %>
+    </div>
+  <% } %>
+
+</div>
+
+  <div class="max-w-xl mx-auto mt-6 bg-white p-4 rounded-xl shadow">
+    <h2 class="font-semibold mb-3">Create Post</h2>
+
+    <form action="/create" method="POST" enctype="multipart/form-data" class="space-y-3">
+      <input type="file" name="image" class="w-full border p-2 rounded" required />
+      <input type="text" name="caption" placeholder="Write a caption..." class="w-full border p-2 rounded" required />
+      <button class="w-full bg-pink-500 text-white py-2 rounded hover:bg-pink-600">
+        Post
+      </button>
+    </form>
+  </div>
+
+  <div class="max-w-6xl mx-auto mt-6 px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+      <% posts.forEach(post => { %>
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          
+          <div class="p-4 font-semibold">
+            <%= post.user.username %>
+          </div>
+
+          <img src="<%= post.image %>" class="w-full h-64 object-cover" />
+
+          <div class="p-4">
+            <p class="mb-3"><%= post.caption %></p>
+
+            <% if (post.user._id.toString() === userId) { %>
+              <div class="flex gap-3">
+                <a href="/edit/<%= post._id %>" 
+                   class="bg-blue-500 text-white px-3 py-1 rounded">
+                  Edit
+                </a>
+
+                <a href="/delete/<%= post._id %>" 
+                   class="bg-red-500 text-white px-3 py-1 rounded">
+                  Delete
+                </a>
+              </div>
+            <% } %>
+
+          </div>
+
+        </div>
+      <% }) %>
+
+    </div>
+  </div>
+
+  <div class="max-w-xl mx-auto mt-8 flex justify-center items-center gap-4">
+
+    <% if (currentPage > 1) { %>
+      <a href="/feed?page=<%= currentPage - 1 %>" 
+         class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Previous
+      </a>
+    <% } %>
+
+    <span class="font-semibold">
+      Page <%= currentPage %> of <%= totalPages %>
+    </span>
+
+    <% if (currentPage < totalPages) { %>
+      <a href="/feed?page=<%= currentPage + 1 %>" 
+         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        Next
+      </a>
+    <% } %>
+
+  </div>
+
+</body>
+</html>
