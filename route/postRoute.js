@@ -88,11 +88,7 @@ router.get("/edit/:id", isAuth, async (req, res) => {
 });
 
 
-router.post(
-  "/update/:id",
-  isAuth,
-  upload.array("images", 5),
-  async (req, res) => {
+router.post( "/update/:id", isAuth, upload.array("images", 5), async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);
       if (!post) return res.redirect("/feed");
@@ -101,16 +97,13 @@ router.post(
         return res.redirect("/feed");
       }
 
-      // Update caption
       post.caption = req.body.caption;
 
-      // 🔥 Convert old single image to images array (if needed)
       if ((!post.images || post.images.length === 0) && post.image) {
         post.images = [post.image];
         post.image = null;
       }
 
-      // 🔥 If new images uploaded → ADD to existing images
       if (req.files && req.files.length > 0) {
         const newImages = req.files.map(
           (file) => "/uploads/" + file.filename

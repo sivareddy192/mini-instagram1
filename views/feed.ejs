@@ -7,7 +7,6 @@
 
 <body class="bg-gray-100">
 
-  <!-- Flash Auto Hide -->
   <script>
     setTimeout(() => {
       const success = document.getElementById("flash-success");
@@ -25,7 +24,6 @@
     }, 3000);
   </script>
 
-  <!-- Navbar -->
   <div class="bg-white shadow p-4 flex justify-between items-center">
     <h1 class="text-xl font-bold text-pink-500">Mini Instagram</h1>
     <a href="/logout" class="bg-red-500 text-white px-4 py-1 rounded">
@@ -33,7 +31,6 @@
     </a>
   </div>
 
-  <!-- Flash Messages -->
   <div class="max-w-xl mx-auto mt-4 px-4">
 
     <% if (success_msg && success_msg.length > 0) { %>
@@ -52,7 +49,6 @@
 
   </div>
 
-  <!-- Create Post -->
   <div class="max-w-xl mx-auto mt-6 bg-white p-4 rounded-xl shadow">
     <h2 class="font-semibold mb-3">Create Post</h2>
 
@@ -76,24 +72,20 @@
     </form>
   </div>
 
-  <!-- Posts -->
   <div class="max-w-6xl mx-auto mt-6 px-4">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 
       <% posts.forEach((post, index) => { %>
         <div class="bg-white rounded-xl shadow overflow-hidden hover:shadow-lg transition">
 
-          <!-- Username -->
           <div class="p-4 font-semibold border-b">
             <%= post.user.username %>
           </div>
 
-          <!-- Images -->
           <div class="p-2">
 
             <% if (post.images && post.images.length > 0) { %>
 
-              <!-- Slider Container -->
               <div class="relative w-full overflow-hidden">
 
                 <div class="flex transition-transform duration-300 w-full"
@@ -108,7 +100,6 @@
 
               </div>
 
-              <!-- Dots -->
               <div class="flex justify-center mt-2 space-x-2">
                 <% post.images.forEach((img, dotIndex) => { %>
                   <button
@@ -121,13 +112,11 @@
 
             <% } else if (post.image) { %>
 
-              <!-- Old Single Image -->
               <img src="<%= post.image %>"
                    class="w-full h-64 object-cover rounded-lg" />
 
             <% } else { %>
 
-              <!-- No Image -->
               <div class="w-full h-64 flex items-center justify-center bg-gray-100 text-gray-400">
                 No Image
               </div>
@@ -136,7 +125,6 @@
 
           </div>
 
-          <!-- Caption + Actions -->
           <div class="p-4">
             <p class="mb-3 text-gray-700"><%= post.caption %></p>
 
@@ -162,7 +150,6 @@
     </div>
   </div>
 
-  <!-- Pagination -->
   <div class="max-w-xl mx-auto mt-8 flex justify-center items-center gap-4">
 
     <% if (currentPage > 1) { %>
@@ -185,7 +172,6 @@
 
   </div>
 
-  <!-- SAFE SLIDER SCRIPT -->
   <script>
     function moveSlide(postIndex, slideIndex) {
       const slider = document.getElementById(`slider-${postIndex}`);
@@ -210,7 +196,6 @@
       }
     }
 
-    // Activate first dot automatically
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('[id^="dot-"][id$="-0"]').forEach(dot => {
         dot.classList.remove("bg-gray-400");
