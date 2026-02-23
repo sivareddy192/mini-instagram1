@@ -44,32 +44,26 @@ router.get("/feed", isAuth, async (req, res) => {
   }
 });
 
-router.post("/create", isAuth, upload.array("images", 5), async (req, res) => {
-    try {
-      if (!req.files || req.files.length === 0) {
-        req.flash("error_msg", "Please upload at least one image!");
-        return res.redirect("/feed");
-      }
-
-      const imagePaths = req.files.map(
-        (file) => "/uploads/" + file.filename
-      );
-
-      await Post.create({
-        images: imagePaths,
-        caption: req.body.caption || "",
-        user: req.session.userId,
-      });
-
-      req.flash("success_msg", "Post created successfully!");
-      res.redirect("/feed");
-    } catch (err) {
-      req.flash("error_msg", err.message);
-      res.redirect("/feed");
+router.post("/create", isAuth, upload.single("image"), async (req, res) => {
+  try {
+    if (!req.file) {
+      req.flash("error_msg", "Please upload an image!");
+      return res.redirect("/feed");
     }
-  }
-);
 
+    await Post.create({
+      image: "/uploads/" + req.file.filename,
+      caption: req.body.caption || "",
+      user: req.session.userId,
+    });
+
+    req.flash("success_msg", "Post created successfully!");
+    res.redirect("/feed");
+  } catch (err) {
+    req.flash("error_msg", err.message);
+    res.redirect("/feed");
+  }
+});
 
 router.get("/edit/:id", isAuth, async (req, res) => {
   try {
@@ -87,42 +81,24 @@ router.get("/edit/:id", isAuth, async (req, res) => {
   }
 });
 
+router.post("/update/:id", isAuth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.redirect("/feed");
 
-router.post( "/update/:id", isAuth, upload.array("images", 5), async (req, res) => {
-    try {
-      const post = await Post.findById(req.params.id);
-      if (!post) return res.redirect("/feed");
-
-      if (post.user.toString() !== req.session.userId) {
-        return res.redirect("/feed");
-      }
-
-      post.caption = req.body.caption;
-
-      if ((!post.images || post.images.length === 0) && post.image) {
-        post.images = [post.image];
-        post.image = null;
-      }
-
-      if (req.files && req.files.length > 0) {
-        const newImages = req.files.map(
-          (file) => "/uploads/" + file.filename
-        );
-
-        post.images = [...(post.images || []), ...newImages];
-      }
-
-      await post.save();
-
-      req.flash("success_msg", "Post updated successfully!");
-      res.redirect("/feed");
-
-    } catch (err) {
-      console.error(err);
-      res.redirect("/feed");
+    if (post.user.toString() !== req.session.userId) {
+      return res.redirect("/feed");
     }
+
+    post.caption = req.body.caption;
+    await post.save();
+
+    res.redirect("/feed");
+  } catch (err) {
+    console.error(err);
+    res.redirect("/feed");
   }
-);
+});
 
 router.get("/delete/:id", isAuth, async (req, res) => {
   try {
