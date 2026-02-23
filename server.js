@@ -3,9 +3,7 @@ const express = require("express");
 const session = require("express-session");
 const methodOverride = require("method-override");
 const path = require("path");
-
 const flash = require("connect-flash");
-const flash = require("connect-flash");   
 const PORT = process.env.PORT || 3000;
 
 const connectDB = require("./config/db");
@@ -43,8 +41,6 @@ app.use(
 );
 
 app.use(flash());
-app.use(flash());
-
 
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
