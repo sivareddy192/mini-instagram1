@@ -3,7 +3,11 @@ const express = require("express");
 const session = require("express-session");
 const methodOverride = require("method-override");
 const path = require("path");
+<<<<<<< HEAD
 const flash = require("connect-flash");
+=======
+const flash = require("connect-flash");   
+>>>>>>> 5e35f8dbccb72a898c47d9a7c2f13c786e0da223
 const PORT = process.env.PORT || 3000;
 
 const connectDB = require("./config/db");
@@ -40,8 +44,15 @@ app.use(
   })
 );
 
+<<<<<<< HEAD
 app.use(flash());
 
+=======
+
+app.use(flash());
+
+
+>>>>>>> 5e35f8dbccb72a898c47d9a7c2f13c786e0da223
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
